@@ -155,4 +155,3 @@ print("\n--- 5. Direct Loop over File Object ---")
 for line in file:
     print(line.strip())
 file.close()
-

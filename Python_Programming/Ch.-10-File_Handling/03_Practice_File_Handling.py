@@ -1,5 +1,5 @@
 # ==========================================
-# CHAPTER 9 PRACTICE SET - PYTHON FILE I/O
+# CHAPTER 10 PRACTICE SET - PYTHON FILE I/O
 # ==========================================
 
 

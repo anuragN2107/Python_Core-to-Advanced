@@ -1,11 +1,11 @@
-# ============================================
-# MASTER NOTES: PYTHON CONSTRUCTORS & DECORATORS
-# ============================================
+# ===============================================================================================================================
+#                                       MASTER NOTES: PYTHON CONSTRUCTORS & DECORATORS
+# ===============================================================================================================================
 
 
-# ============================================
+# ===============================================================================================================================
 # PART 1: PYTHON CONSTRUCTORS (__init__ method)
-# ============================================
+# ===============================================================================================================================
 
 # WHAT IS A CONSTRUCTOR?
 # A constructor is a special magic method in Python named `__init__`. 
@@ -38,13 +38,16 @@ s2.display_info()
 # KEY RULE FOR CONSTRUCTORS:
 # The constructor must NOT return anything (it implicitly returns `None`). 
 # If you try to write `return self.name` inside `__init__`, Python will raise a TypeError.
+print()
 
 
-# ============================================
-# PART 2: BUILT-IN CLASS DECORATORS
-# ============================================
+# ===============================================================================================================================
+# PART 2: BUILT-IN CLASS DECORATORS (@staticmethod, @classmethod, @property)
+# ===============================================================================================================================
 # Python provides built-in decorators to modify how methods behave inside a class.
-# The three most important ones are @staticmethod, @classmethod, and @property.
+# The three most important ones are @staticmethod, @classmethod, and @property (Getters & Setters).
+
+print("=== PART 2: BUILT-IN CLASS DECORATORS ===")
 
 class BankAccount:
     bank_name = "Global National Bank"  # Class attribute (shared by all accounts)
@@ -53,30 +56,97 @@ class BankAccount:
         self.owner = owner
         self.__balance = balance  # Private attribute (hidden from direct outside access)
 
+    # -------------------------------------------------------------
     # 1. @staticmethod
+    # -------------------------------------------------------------
     # - Does NOT take 'self' or 'cls'. 
     # - It behaves like a normal function, but lives inside the class namespace because 
     #   it is logically related to the class. Use it when you don't need access to object or class data.
+    #Syntax: @staticmethod
+    #   def method_name(*args, **kwargs):
+    #       ...
     @staticmethod
     def bank_rules():
         print("Rule: Always keep your PIN secure and report lost cards immediately.")
 
+    # -------------------------------------------------------------
     # 2. @classmethod
+    # -------------------------------------------------------------
     # - Takes 'cls' instead of 'self'. 
     # - It can access and modify class-level attributes across all instances.
+    #Syntax: @classmethod
+    #   def method_name(cls, *args, **kwargs):
+    #       ...
     @classmethod
     def change_bank_name(cls, new_name):
         cls.bank_name = new_name
 
-    # 3. @property (Getter Decorator)
-    # - Allows a method to be accessed like a normal variable attribute (without parentheses `()`).
-    # - Highly useful for exposing private data safely.
+
+# --- Demonstration of @staticmethod ---
+print("\n--- [Demo] @staticmethod ---")
+class MathUtils:
+    @staticmethod
+    def add_numbers(a, b):
+        """A utility method that doesn't rely on class or instance state."""
+        return a + b
+
+# Calling static method directly on the class (recommended)
+print("Sum via Class:", MathUtils.add_numbers(10, 20))
+
+# Calling static method on an object instance (possible, but passes no self/cls)
+math_obj = MathUtils()
+print("Sum via Instance:", math_obj.add_numbers(5, 15))
+
+
+# Demonstration of @classmethod with Employee scope
+class Employee:
+    a = 1  # Class attribute shared across all instances
+
+    @classmethod
+    def show(cls):  
+        print(f"The class attribute of a is {cls.a}")
+
+e = Employee() 
+e.a = 45  # Creating an instance-level attribute 'a' (does not affect the class attribute 'a')
+e.show()  # Calling the class method using the object (Outputs: 1, because cls references the class level)
+
+
+# -------------------------------------------------------------
+# 3. @property (Getter & Setter Decorators)
+# -------------------------------------------------------------
+# - Getter (@property): Allows a method to be accessed like a normal variable attribute (without parentheses `()`).
+# - Setter (@property.setter): Controls how attributes are modified, allowing validation logic before updating private data.
+#Syntax: @property
+#   def getter_method(self):
+#       ...
+#   @property.setter
+#   def setter_method(self, new_value):
+#       ...
+
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price  # Triggers the setter method automatically upon initialization
+
+    # --- GETTER ---
     @property
-    def balance(self):
-        return self.__balance
+    def price(self):
+        """Retrieves the private price value safely."""
+        return self._price
+
+    # --- SETTER ---
+    @price.setter
+    def price(self, new_price):
+        """Validates the price before assignment to ensure data integrity."""
+        if new_price < 0:
+            print(f"[Validation Error]: Price '{new_price}' cannot be negative! Setting default to 0.")
+            self._price = 0
+        else:
+            self._price = new_price
 
 
 # --- Executing Built-in Decorators ---
+print("\n--- Executing Built-in Decorators ---")
 BankAccount.bank_rules()  # Called directly on the class
 
 BankAccount.change_bank_name("Future Trust Bank")
@@ -84,12 +154,20 @@ print("Updated Bank Name:", BankAccount.bank_name)
 
 acc = BankAccount("Charlie", 10000)
 print("Account Owner:", acc.owner)
-print("Account Balance:", acc.balance)  # Notice: accessed as 'acc.balance', NOT 'acc.balance()'
+
+# Testing @property Getter and Setter with Product class
+p = Product("Laptop", 1200)
+print(f"Product: {p.name}, Price: ${p.price}")  # Accessed as variable (Getter)
+
+print("\nAttempting to set an invalid negative price:")
+p.price = -500  # Triggers the Setter validation
+print(f"Corrected Price: ${p.price}")
+print()
 
 
-# ============================================
+# ===============================================================================================================================
 # PART 3: CUSTOM FUNCTION DECORATORS
-# ============================================
+# ===============================================================================================================================
 
 # WHAT IS A DECORATOR?
 # A decorator is a design pattern that allows you to wrap another function to 
@@ -105,7 +183,7 @@ def say_hello(name):
     return f"Hello, {name}!"
 
 greet_variable = say_hello  # Assigning function to a variable
-print(greet_variable("David"))
+print("First-Class Citizen Test:", greet_variable("David"))
 
 
 # CONCEPT B: Nested Functions (Functions inside Functions)
@@ -119,11 +197,12 @@ def outer_message(message):
 
 my_printer = outer_message("Python decorators are powerful!")
 my_printer()  # Executes the inner function
+print()
 
 
-# ============================================
+# =====================================================================
 # BUILDING A COMPLETE CUSTOM DECORATOR
-# ============================================
+# =====================================================================
 # A standard custom decorator follows this exact structure:
 # 1. Takes a function as an argument.
 # 2. Defines an inner wrapper function that adds extra logic.

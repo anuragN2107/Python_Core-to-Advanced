@@ -64,3 +64,32 @@ print(c + " is a good boy")  # Output: harry is a good boy
 # - Boolean:   bool (True, False)
 # - None:      NoneType (None)
 # ==============================================================================
+
+
+# ===============================================================================================================================
+#                                       PYTHON 'PASS' KEYWORD: USES & PURPOSES
+# ===============================================================================================================================
+
+# WHAT IS THE 'PASS' KEYWORD?
+# - The 'pass' keyword is a null statement and a placeholder in Python. 
+# - When executed by the interpreter, it does absolutely nothing.
+
+# PRIMARY USES OF THE 'PASS' KEYWORD:
+# 
+# 1. Satisfying Syntax and Indentation Rules:
+#    - Python relies heavily on indentation blocks. If a class, function, loop, or conditional 
+#      statement is left completely empty, Python raises a SyntaxError. 
+#    - 'pass' provides a valid statement to keep the syntax parser happy.
+#
+# 2. Stubbing Out Code During Development:
+#    - Useful during early-stage software design and architectural planning.
+#    - Allows developers to define the structure of classes and functions that they plan 
+#      to implement later without breaking the rest of the script.
+#
+# 3. Defining Abstract Methods in Blueprints:
+#    - Used inside Abstract Base Classes (ABCs) right under `@abstractmethod` decorators.
+#    - Serves as a placeholder body for interface methods that child classes are required to override.
+#
+# 4. Reserving Space in Conditionals and Loops:
+#    - Allows you to reserve structural space in `if`, `elif`, `else` blocks or `for`/`while` loops 
+#      where handling logic will be inserted later, keeping the program logic flow valid.

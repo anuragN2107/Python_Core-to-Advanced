@@ -46,6 +46,9 @@ d = Dog()
 d.eat()   # Inherited
 d.bark()  # Child's own
 
+#Output: Animal is eating.
+#      Dog is barking.
+
 # Example B: Single Inheritance with Constructor (__init__ & self)
 print("--- [B] Constructor Example ---")
 class Person:
@@ -61,8 +64,8 @@ class Student(Person):
         print(f"Student: {self.name}, ID: {self.student_id}")
 
 s = Student("Alice", "S101")
-s.display()
-print()
+s.display() # Output: Student: Alice, ID: S101
+print()  # Output: Student: Alice, ID: S101
 
 
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -95,9 +98,9 @@ class Duck(Flyer, Swimmer):
         print("Duck says Quack!")
 
 duck = Duck()
-duck.fly()
-duck.swim()
-duck.quack()
+duck.fly() # Output: Flying in the sky.
+duck.swim() # Output: Swimming in water.
+duck.quack() # Output: Duck says Quack!
 
 # Example B: Multiple Inheritance with Constructor (__init__ & self)
 print("--- [B] Constructor Example ---")
@@ -119,8 +122,8 @@ class Child(Father, Mother):
         print(f"Child: {self.child_name}, Father: {self.father_name}, Mother: {self.mother_name}")
 
 c = Child("Bob", "Robert", "Mary")
-c.show_family()
-print()
+c.show_family() # Output: Child: Bob, Father: Robert, Mother: Mary
+print()  # Output: Child: Bob, Father: Robert, Mother: Mary
 
 
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -153,9 +156,9 @@ class GrandChild(Parent):
         print("I am the GrandChild.")
 
 gc = GrandChild()
-gc.lineage()
-gc.generation()
-gc.identity()
+gc.lineage() # Output: From Grandparent lineage.
+gc.generation() # Output: From Parent generation.
+gc.identity() # Output: I am the GrandChild.
 
 # Example B: Multilevel Inheritance with Constructor (__init__ & self)
 print("--- [B] Constructor Example ---")
@@ -177,8 +180,8 @@ class ElectricCar(Car):
         print(f"Brand: {self.brand}, Fuel: {self.fuel_type}, Battery: {self.battery_capacity}kWh")
 
 ec = ElectricCar("Tesla", "Electric", 100)
-ec.specs()
-print()
+ec.specs() # Output: Brand: Tesla, Fuel: Electric, Battery: 100kWh
+print()  # Output: Brand: Tesla, Fuel: Electric, Battery: 100kWh
 
 
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -211,12 +214,12 @@ class Rectangle(Shape):
         print("Calculating rectangle area.")
 
 cir = Circle()
-cir.render()
-cir.area_circle()
+cir.render() # Output: Rendering generic shape.
+cir.area_circle() # Output: Calculating circle area.
 
 rec = Rectangle()
-rec.render()
-rec.area_rect()
+rec.render() # Output: Rendering generic shape.
+rec.area_rect() # Output: Calculating rectangle area.
 
 # Example B: Hierarchical Inheritance with Constructor (__init__ & self)
 print("--- [B] Constructor Example ---")
@@ -236,8 +239,8 @@ class CheckingAccount(Account):
         self.overdraft_limit = overdraft_limit
 
 sav = SavingsAccount("Charlie", 5000, 4.5)
-print(f"Savings Account Owner: {sav.owner}, Balance: {sav.balance}, Interest: {sav.interest_rate}%")
-print()
+print(f"Savings Account Owner: {sav.owner}, Balance: {sav.balance}, Interest: {sav.interest_rate}%") # Output: Savings Account Owner: Charlie, Balance: 5000, Interest: 4.5%
+print()  # Output: Savings Account Owner: Charlie, Balance: 5000, Interest: 4.5%
 
 
 # -------------------------------------------------------------------------------------------------------------------------------
@@ -272,10 +275,10 @@ class SmartPhone(Phone, Camera):
         print("Running smart applications.")
 
 sp = SmartPhone()
-sp.power_on()       # From Device
-sp.call()           # From Phone
-sp.snap()           # From Camera
-sp.smart_features() # Own method
+sp.power_on()       # From Device # Output: Device is powered on.
+sp.call()           # From Phone # Output: Calling from phone.
+sp.snap()           # From Camera # Output: Taking photo with camera.
+sp.smart_features() # Own method # Output: Running smart applications.
 
 # Example B: Hybrid Inheritance with Constructor (__init__ & self)
 print("--- [B] Constructor Example ---")
@@ -302,8 +305,8 @@ class SmartTerminal(Computer, DisplayUnit):
         print(f"Type: {self.machine_type}, OS: {self.os}, Resolution: {self.resolution}, Touch: {self.touch_support}")
 
 st = SmartTerminal("Terminal", "Linux", "4K", True)
-st.display_specs()
-print()
+st.display_specs() # Output: Type: Terminal, OS: Linux, Resolution: 4K, Touch: True
+print()  # Output: Type: Terminal, OS: Linux, Resolution: 4K, Touch: True
 
 
 
@@ -355,3 +358,25 @@ class Dog(Animal):
 
 d = Dog()
 d.eat()
+
+#Example2: Using __init__ to initialize attributes and super() to call parent methods
+print("\n--- [Example 2: Using __init__ to initialize attributes and super() to call parent methods] ---")
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def eat(self):
+        print(f"{self.name} is eating.")
+
+class Dog(Animal):
+    def __init__(self, name, favorite_food):
+        super().__init__(name)  # Calls the parent's __init__ method
+        self.favorite_food = favorite_food
+
+    def eat(self):
+        super().eat()  # Calls the parent's eat() method
+        print(f"{self.name} is also eating {self.favorite_food}.")  # Child's own extra logic
+
+d = Dog("Buddy", "kibble")
+d.eat()  # Output: Buddy is eating.
+#      Buddy is also eating kibble.

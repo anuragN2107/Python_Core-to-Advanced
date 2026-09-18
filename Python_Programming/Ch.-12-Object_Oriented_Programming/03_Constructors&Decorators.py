@@ -1,5 +1,5 @@
 # ===============================================================================================================================
-#                                       MASTER NOTES: PYTHON CONSTRUCTORS & DECORATORS
+#                                   MASTER NOTES: PYTHON CONSTRUCTORS & DECORATORS
 # ===============================================================================================================================
 
 
@@ -13,9 +13,18 @@
 # the moment that object is created from a class. Think of it like filling out a 
 # registration form automatically whenever a new user profile is created.
 
+# WHAT IS DUNDER OR MAGIC METHOD?
+# A magic method (double underscore) is a special method automatically called by Python 
+# when a class is instantiated. It is used to initialize the attributes of the object with initial values.
+
 # HOW `self` WORKS:
 # `self` represents the *current instance* (the specific object) you are working with. 
 # When you write `self.name = name`, Python attaches the passed value to that specific object.
+
+# KEY RULE FOR CONSTRUCTORS:
+# The constructor must NOT return anything (it implicitly returns `None`). 
+# If you try to write `return self.name` inside `__init__`, Python will raise a TypeError.
+
 
 class Student:
     # This is a Parameterized Constructor (accepts arguments besides self)
@@ -28,16 +37,15 @@ class Student:
     def display_info(self):
         print(f"Student: {self.name}, Age: {self.age}, Course: {self.course}")
 
+
+# --- Demonstration of Constructors ---
+print("=== PART 1: PYTHON CONSTRUCTORS ===")
 # Creating objects triggers the __init__ constructor automatically
 s1 = Student("Alice", 20)                 # Uses default course ("Computer Science")
 s2 = Student("Bob", 22, "Data Science")   # Overrides default course
 
 s1.display_info()
 s2.display_info()
-
-# KEY RULE FOR CONSTRUCTORS:
-# The constructor must NOT return anything (it implicitly returns `None`). 
-# If you try to write `return self.name` inside `__init__`, Python will raise a TypeError.
 print()
 
 
@@ -62,19 +70,23 @@ class BankAccount:
     # - Does NOT take 'self' or 'cls'. 
     # - It behaves like a normal function, but lives inside the class namespace because 
     #   it is logically related to the class. Use it when you don't need access to object or class data.
-    #Syntax: @staticmethod
+    # Syntax: 
+    #   @staticmethod
     #   def method_name(*args, **kwargs):
     #       ...
     @staticmethod
     def bank_rules():
         print("Rule: Always keep your PIN secure and report lost cards immediately.")
 
+    #output: Rule: Always keep your PIN secure and report lost cards immediately.
+
     # -------------------------------------------------------------
     # 2. @classmethod
     # -------------------------------------------------------------
     # - Takes 'cls' instead of 'self'. 
     # - It can access and modify class-level attributes across all instances.
-    #Syntax: @classmethod
+    # Syntax: 
+    #   @classmethod
     #   def method_name(cls, *args, **kwargs):
     #       ...
     @classmethod
@@ -92,13 +104,16 @@ class MathUtils:
 
 # Calling static method directly on the class (recommended)
 print("Sum via Class:", MathUtils.add_numbers(10, 20))
+#output: Sum via Class: 30
 
 # Calling static method on an object instance (possible, but passes no self/cls)
 math_obj = MathUtils()
 print("Sum via Instance:", math_obj.add_numbers(5, 15))
+#output: Sum via Instance: 20
 
 
-# Demonstration of @classmethod with Employee scope
+# --- Demonstration of @classmethod with Employee scope ---
+print("\n--- [Demo] @classmethod Scope ---")
 class Employee:
     a = 1  # Class attribute shared across all instances
 
@@ -116,7 +131,8 @@ e.show()  # Calling the class method using the object (Outputs: 1, because cls r
 # -------------------------------------------------------------
 # - Getter (@property): Allows a method to be accessed like a normal variable attribute (without parentheses `()`).
 # - Setter (@property.setter): Controls how attributes are modified, allowing validation logic before updating private data.
-#Syntax: @property
+# Syntax: 
+#   @property
 #   def getter_method(self):
 #       ...
 #   @property.setter
@@ -175,7 +191,7 @@ print()
 # To understand decorators, you must first understand two foundational concepts in Python:
 
 
-# CONCEPT A: Functions are "First-Class Citizens"
+# --- CONCEPT A: Functions are "First-Class Citizens" ---
 # This means functions can be treated like regular variables—passed into other functions, 
 # assigned to variables, or returned.
 
@@ -186,7 +202,7 @@ greet_variable = say_hello  # Assigning function to a variable
 print("First-Class Citizen Test:", greet_variable("David"))
 
 
-# CONCEPT B: Nested Functions (Functions inside Functions)
+# --- CONCEPT B: Nested Functions (Functions inside Functions) ---
 # A function can be defined inside another function. The inner function has access 
 # to variables of the outer function (this forms the basis of closures).
 

@@ -135,6 +135,7 @@ class DogWithClassAttr:
 print(DogWithClassAttr.species) # Output: Canis familiaris
 
 
+
 # ==========================================
 # 10. TYPES OF METHODS IN PYTHON CLASSES
 # ==========================================
@@ -161,6 +162,36 @@ class DogWithClassMethod:
 
 print(DogWithClassMethod.get_species())  # Output: Canis familiaris
 
+#Example2:
+from datetime import date
+
+class User:
+    def __init__(self, name, age):
+        self.name = name
+        self.name = name
+        self.age = age
+
+    # Standard Instance Method
+    def introduce(self):
+        return f"Hi, I'm {self.name} and I am {self.age} years old."
+
+    # Class Method acting as a Factory / Alternative Constructor
+    @classmethod
+    def from_birth_year(cls, name, birth_year):
+        # Calculate age and dynamically instantiate the class using 'cls'
+        age = date.today().year - birth_year
+        return cls(name, age)
+
+# Usage:
+# 1. Normal instantiation
+user1 = User("Alice", 30)
+
+# 2. Instantiation via Class Method (No instance needed to call it!)
+user2 = User.from_birth_year("Bob", 1996)
+
+print(user2.introduce())  # Output: Hi, I'm Bob and I am 30 years old.
+
+
 
 # C. Static Methods
 # - Methods that belong to a class but do NOT have access to instance (self) or class (cls) variables.
@@ -170,7 +201,23 @@ print(DogWithClassMethod.get_species())  # Output: Canis familiaris
 # Syntax:
 # @staticmethod
 # def method_name(arg1, arg2, ...):
+#Example1:
+class TemperatureConverter:
+    # A simple utility that doesn't need to know about class or instance state
+    @staticmethod
+    def celsius_to_fahrenheit(celsius):
+        return (celsius * 9/5) + 32
 
+    @staticmethod
+    def is_valid_temperature(celsius):
+        return celsius >= -273.15  # Absolute zero
+
+# Usage:
+# You can call it directly on the class without instantiating an object
+print(TemperatureConverter.celsius_to_fahrenheit(25))  # Output: 77.0
+print(TemperatureConverter.is_valid_temperature(-300)) # Output: False
+
+#Example2:
 class MathUtils:
     @staticmethod
     def add(x, y):

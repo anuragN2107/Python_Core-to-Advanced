@@ -1,8 +1,6 @@
 # ===============================================================================================================================
 #                                       MASTER NOTES: THE WALRUS OPERATOR (:=) IN PYTHON
 # ===============================================================================================================================
-# This file is structured sequentially so you can read, understand, and run every concept step-by-step.
-
 
 # ===============================================================================================================================
 # STEP 1: WHAT IS THE WALRUS OPERATOR? (Definition)
@@ -39,35 +37,40 @@ print("=== DEMO 1: While Loop Streamlining ===")
 # Problem: Usually, you have to prompt/get input before the loop and repeat it inside the loop.
 # With the Walrus operator, you assign the input and check it in a single line.
 
-# Simulating user inputs using an iterator so the code runs automatically without blocking:
-simulated_inputs = iter(["hello", "python", "quit"])
+simulated_inputs = iter(["hello", "python", "quit"])  # Set up simulated user inputs using an iterator so the code runs automatically
 
-def mock_input(prompt):
-    return next(simulated_inputs)
+def mock_input(prompt): 
+    return next(simulated_inputs)  # Define a fake input function that automatically grabs the next simulated item
 
-# The actual walrus pattern for a while loop:
-# while (user_input := input("Enter text: ")) != "quit":
-#     print(f"You entered: {user_input}")
-
-# Executing with our mock function:
+#  The Walrus Loop: Assigns the input to 'user_input' and checks if it's "quit" all at once
 while (user_input := mock_input("Enter text: ")) != "quit":
-    print(f"-> Processed input: {user_input}")
-print("Loop exited successfully!\n")
+    print(f"-> Processed input: {user_input}")    # This runs only if user_input is NOT "quit"
 
+print("Loop exited successfully!\n") #This runs after the loop safely exits
+
+#Output:
+# -> Processed input: hello
+# -> Processed input: python
+# Loop exited successfully!
 
 # ===============================================================================================================================
 # STEP 5: USE CASE 2 - AVOIDING REDUNDANT FUNCTION CALLS IN `if` STATEMENTS
 # ===============================================================================================================================
 print("=== DEMO 2: If Statement Redundancy Reduction ===")
 
+# Simulates fetching a database list (returns a list of 5 items)
 def fetch_data():
-    """Simulates a function that returns a collection of items."""
     return [100, 200, 300, 400, 500]
 
-# Without walrus, you might calculate len() twice or assign it on the line above.
-# With walrus, we compute len(), store it in `count`, and evaluate it in the condition simultaneously:
+# Calculates length, saves it to 'count', and checks if it's > 3 all in one step
 if (count := len(fetch_data())) > 3:
+    # 'count' is safely stored and can be reused inside the print statement
     print(f"-> Warning: Large dataset detected with {count} items!\n")
+else:
+    print("-> No large dataset detected.\n")
+
+#Output:
+# -> Warning: Large dataset detected with 5 items!
 
 
 # ===============================================================================================================================
@@ -75,44 +78,51 @@ if (count := len(fetch_data())) > 3:
 # ===============================================================================================================================
 print("=== DEMO 3: List Comprehension Optimization ===")
 
+# Simulates a heavy calculation (squaring a number)
 def expensive_operation(x):
-    """Simulates a heavy calculation."""
     return x ** 2
 
-# We calculate `y` once using the walrus operator, filter it, and store it directly in the list.
-# This prevents calling `expensive_operation(x)` twice per item.
+# Loops 0 to 7. Computes once, saves it to 'y', checks if y > 20, and builds the list.
 results = [y for x in range(8) if (y := expensive_operation(x)) > 20]
+
 print(f"-> Filtered results (> 20): {results}\n")
+
+#Output:
+#-> Filtered results (> 20): [25, 36, 49]
 
 
 # ===============================================================================================================================
 # STEP 7: REAL-WORLD EXAMPLE (Regex Log Parsing)
 # ===============================================================================================================================
-print("=== DEMO 4: Real-World Regex Matching ===")
-
 import re
 
+# The text string to analyze
 log_message = "CRITICAL_ERROR: Code 503 encountered during server sync."
+
+# Regex pattern: matches "Code", spaces (\s+), and captures digits (\d+)
 error_pattern = r"Code\s+(\d+)"
 
-# Real-world scenario: Check if a regex match exists, and immediately capture its group 
-# without executing re.search() twice.
+# Simultaneously searches the text and assigns the result to 'match'
 if match := re.search(error_pattern, log_message):
+    # Retrieve the numbers saved inside the first capture group ()
     error_code = match.group(1)
     print(f"-> Alert! Caught error code number: {error_code}\n")
 else:
     print("-> Log file is clean.\n")
-
+#Output:
+# -> Alert! Caught error code number: 503
 
 # ===============================================================================================================================
 # STEP 8: EXCEPTIONS, LIMITATIONS, & GOTCHAS
 # ===============================================================================================================================
 print("=== DEMO 5: Variable Scope Leakage Gotcha ===")
 
-# Gotcha: Variables assigned via the walrus operator do NOT disappear outside their block 
-# (unlike block scopes in languages like C++ or Java). They leak into the parent scope.
-
+# Assigns value and evaluates the condition simultaneously
 if (leaked_variable := "I am accessible outside the block!"):
-    pass
+    pass  # 'pass' does nothing, acting as a temporary placeholder
 
+# Python has no block scope; variables created in an 'if' statement survive outside it
 print(f"-> Scope Check (Variable survived outside block): {leaked_variable}")
+
+#Output:
+#-> Scope Check (Variable survived outside block): I am accessible outside the block!

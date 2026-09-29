@@ -98,3 +98,47 @@ with open("myfile.txt", "r") as f:
 
 print("\n--- 4. Practical Example Output ---")
 print(txt)
+
+
+
+#Multiple files can be opened in a single `with` block using following three approach.
+
+from contextlib import ExitStack
+
+# ==========================================
+# 1. COMMA-SEPARATED APPROACH (Standard)
+# Best for a small, fixed number of files on one line.
+# ==========================================
+with open('input.txt', 'r') as fin, open('output.txt', 'w') as fout:
+    content = fin.read()
+    fout.write(content)
+
+
+# ==========================================
+# 2. PARENTHESIZED APPROACH (Python 3.9+)
+# Best for a fixed number of files structured cleanly across multiple lines.
+# ==========================================
+with (
+    open('file1.txt', 'r') as f1,
+    open('file2.txt', 'r') as f2,
+    open('file3.txt', 'r') as f3
+):
+    # Read or process each file inside the block
+    data1 = f1.read()
+    data2 = f2.read()
+    data3 = f3.read()
+
+
+# ==========================================
+# 3. DYNAMIC APPROACH USING EXITSTACK
+# Best when your filenames are in a list or generated dynamically.
+# ==========================================
+filenames = ['file1.txt', 'file2.txt', 'file3.txt']
+
+with ExitStack() as stack:
+    # Dynamically open all files and safely manage them together
+    files = [stack.enter_context(open(fname, 'r')) for fname in filenames]
+    
+    # Process the opened files
+    for f in files:
+        print(f.readline())
